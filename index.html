@@ -1,0 +1,152 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .myDiv {
+            border: 1px outset rgb(10, 10, 10);
+            background-color: rgb(219, 228, 231);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="hidden" id="hfRowIndex" value="" />
+    <div class="myDiv">
+        <h2>This Div1</h2>
+        <form>
+            <table class="table">
+                <tr>
+                    <td>Employee Number</td>
+                    <td>
+                        <input type="number" name="Employee Number" id="txtId" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Employee Name</td>
+                    <td>
+                        <input type="text" name="Employee Name" id="txtName" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type='button' id='btnAdd'>Save</button>
+                        <button type='button' id='btnUpdate' style="display: none;">Update</button>
+                    </td>
+                    <td>
+                        <button type='button' id='btnClear'>Reset</button>
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+        <p>Some Text... etc </p>
+    </div>
+
+
+
+
+
+
+    <div class="myDiv">
+        <h2>This is Div2</h2>
+        <table id="tblCustomers" class="table">
+            <thead>
+                <tr>
+                    <th>Employee Number &nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th>Employee Name&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th>Edit&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th>Delete&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#btnAdd').on('click', function () {
+                var name, id;
+                id = $("#txtId").val();
+                name = $("#txtName").val();
+
+                if (isNaN(id) || id < 0) {
+                    alert('Enter Positive Number')
+                    return;
+                }
+                var edit = "<a class='edit' href='JavaScript:void(0);' >Edit</a>";
+                var del = "<a class='delete' href='JavaScript:void(0);'>Delete</a>";
+                if (name == "" || id == "") {
+                    alert("Employee Name and Employee ID are  required!");
+                }
+                else {
+                    var table = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + edit + "</td><td>" + del + "</td></tr>";
+                    $("#tblCustomers").append(table);
+                }
+                id = $("#txtId").val("");
+                name = $("#txtName").val("");
+                Clear();
+            }
+            );
+
+
+
+
+
+
+            $('#btnUpdate').on('click', function () {
+                var name, id;
+                id = $("#txtId").val();
+                name = $("#txtName").val();
+
+                if (isNaN(id) || id < 0) {
+                    alert('Enter Positive Number')
+                    return;
+                }
+
+                $('#tblCustomers tbody tr').eq($('#hfRowIndex').val()).find('td').eq(1).html(name);
+                $('#tblCustomers tbody tr').eq($('#hfRowIndex').val()).find('td').eq(2).html(country)
+
+                $('#btnAdd').show();
+                $('#btnUpdate').hide();
+                Clear();
+            });
+
+            $("#tblCustomers").on("click", ".delete", function (e) {
+                if (confirm("Are you sure want to delete this record!")) {
+                    $(this).closest('tr').remove();
+                } else {
+                    e.preventDefault();
+                }
+            });
+
+            $('#btnClear').on('click', function () {
+                Clear();
+            });
+
+            $("#tblCustomers").on("click", ".edit", function (e) {
+                var row = $(this).closest('tr');
+                $('#hfRowIndex').val($(row).index());
+                var td = $(row).find("td");
+                $('#txtId').val($(td).eq(0).html());
+                $('#txtName').val($(td).eq(1).html());
+                $('#btnAdd').hide();
+                $('#btnUpdate').show();
+            });
+        });
+        function Clear() {
+            $("#txtId").val("");
+            $("#txtName").val("");
+            $("#hfRowIndex").val("");
+        }
+    </script>
+
+
+
+</body>
+
+</html>
